@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="TLSRef — TLS configuration references, guidelines, and tools for secure server deployments.">
+  <meta property="og:title" content="TLSRef">
+  <meta property="og:description" content="TLS configuration references, guidelines, and tools for secure server deployments.">
+  <title>TLSRef</title>
+  <link rel="icon" type="image/svg+xml" href="icon.svg">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;600;700&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --brand: #0f766e;
+      --brand-dark: #0d6460;
+      --bg: #f8fafc;
+      --card-bg: #ffffff;
+      --text: #1e293b;
+      --muted: #64748b;
+      --border: #e2e8f0;
+    }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'IBM Plex Sans', system-ui, sans-serif;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* ── Brand badge ── */
+    .brand-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: .45em;
+      background: var(--brand);
+      color: #fff;
+      font-weight: 600;
+      font-size: 1.1rem;
+      letter-spacing: .03em;
+      border-radius: 999px;
+      padding: .35em 1.1em;
+    }
+    .brand-icon {
+      width: 1em;
+      height: 1em;
+      flex-shrink: 0;
+    }
+
+    /* ── Header ── */
+    header {
+      padding: 2.5rem 1.5rem 0;
+      max-width: 900px;
+      margin: 0 auto;
+      width: 100%;
+    }
+
+    /* ── Hero ── */
+    .hero {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 2.5rem 1.5rem 1rem;
+      width: 100%;
+    }
+    .hero h1 {
+      font-size: clamp(1.6rem, 4vw, 2.4rem);
+      font-weight: 700;
+      line-height: 1.2;
+      margin-bottom: .75rem;
+    }
+    .hero p {
+      font-size: 1.05rem;
+      color: var(--muted);
+      max-width: 56ch;
+      line-height: 1.6;
+    }
+
+    /* ── Cards ── */
+    .cards {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 2rem 1.5rem 3rem;
+      width: 100%;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 1.25rem;
+    }
+
+    .card {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 1.75rem;
+      text-decoration: none;
+      color: inherit;
+      display: flex;
+      flex-direction: column;
+      gap: .75rem;
+      transition: box-shadow .15s, border-color .15s, transform .15s;
+    }
+    .card:hover {
+      box-shadow: 0 4px 20px rgba(15,118,110,.12);
+      border-color: var(--brand);
+      transform: translateY(-2px);
+    }
+
+    .card-icon {
+      width: 2.5rem;
+      height: 2.5rem;
+      background: #f0fdfa;
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+    .card-icon svg {
+      width: 1.4rem;
+      height: 1.4rem;
+    }
+
+    .card h2 {
+      font-size: 1.1rem;
+      font-weight: 600;
+    }
+    .card p {
+      font-size: .9rem;
+      color: var(--muted);
+      line-height: 1.55;
+      flex: 1;
+    }
+    .card-arrow {
+      font-size: .85rem;
+      font-weight: 600;
+      color: var(--brand);
+      display: flex;
+      align-items: center;
+      gap: .3em;
+    }
+    .card-arrow::after {
+      content: '→';
+    }
+
+    /* ── Footer ── */
+    footer {
+      margin-top: auto;
+      background: #0f172a;
+      color: #94a3b8;
+      font-size: .875rem;
+    }
+    .footer-inner {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 2.5rem 1.5rem;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 2rem;
+      justify-content: space-between;
+      align-items: flex-start;
+    }
+    .footer-brand {
+      display: flex;
+      flex-direction: column;
+      gap: .75rem;
+    }
+    .footer-tagline {
+      max-width: 28ch;
+      line-height: 1.5;
+    }
+    footer a {
+      color: #94a3b8;
+      text-decoration: none;
+    }
+    footer a:hover {
+      color: #fff;
+    }
+    .footer-links {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1.5rem;
+    }
+    .footer-links ul {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: .5rem;
+    }
+    .footer-links li a {
+      line-height: 1.4;
+    }
+
+    @media (max-width: 480px) {
+      .footer-inner { flex-direction: column; }
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <div class="brand-badge">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" class="brand-icon" aria-hidden="true" fill="none">
+        <g stroke="currentColor" stroke-width="1.5" stroke-linecap="round">
+          <line x1="10" y1="4"  x2="28" y2="6"/>
+          <line x1="28" y1="6"  x2="22" y2="28"/>
+          <line x1="22" y1="28" x2="4"  y2="26"/>
+          <line x1="4"  y1="26" x2="10" y2="4"/>
+          <line x1="10" y1="4"  x2="22" y2="28"/>
+          <line x1="28" y1="6"  x2="4"  y2="26"/>
+        </g>
+        <g fill="currentColor">
+          <circle cx="10" cy="4"  r="2.5"/>
+          <circle cx="28" cy="6"  r="2.5"/>
+          <circle cx="22" cy="28" r="2.5"/>
+          <circle cx="4"  cy="26" r="2.5"/>
+        </g>
+      </svg>
+      TLSRef
+    </div>
+  </header>
+
+  <section class="hero">
+    <h1>TLS configuration guidelines and tooling</h1>
+    <p>Reference guidelines, a configuration generator, and machine-readable data for deploying TLS securely.</p>
+  </section>
+
+  <main class="cards">
+
+    <a href="https://configurator.tlsref.org/" class="card">
+      <div class="card-icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="#0f766e" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <path d="M12 2a10 10 0 1 0 10 10"/>
+          <path d="M12 6v6l4 2"/>
+          <circle cx="18" cy="6" r="3"/>
+          <path d="M18 3v3h3"/>
+        </svg>
+      </div>
+      <h2>TLS Configurator</h2>
+      <p>Generate a secure, copy-paste TLS configuration for your server software. Supports nginx, Apache, HAProxy, and more.</p>
+      <span class="card-arrow">Open configurator</span>
+    </a>
+
+    <a href="https://docs.tlsref.org/" class="card">
+      <div class="card-icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="#0f766e" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/>
+          <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/>
+          <line x1="9" y1="9" x2="15" y2="9"/>
+          <line x1="9" y1="13" x2="13" y2="13"/>
+        </svg>
+      </div>
+      <h2>Documentation</h2>
+      <p>Read the TLS guidelines in full — including cipher suite recommendations, protocol versions, HSTS policy, and certificate guidance.</p>
+      <span class="card-arrow">Read the docs</span>
+    </a>
+
+    <a href="https://data.tlsref.org/" class="card">
+      <div class="card-icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="#0f766e" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <ellipse cx="12" cy="5" rx="9" ry="3"/>
+          <path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3"/>
+          <path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"/>
+        </svg>
+      </div>
+      <h2>Machine-Readable Data</h2>
+      <p>Access the TLS guidelines as structured JSON — suitable for tooling, automation, and building your own integrations.</p>
+      <span class="card-arrow">Explore the data</span>
+    </a>
+
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+      <div class="footer-brand">
+        <div class="brand-badge" style="background:#1e293b; border: 1px solid #334155;">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" class="brand-icon" aria-hidden="true" fill="none">
+            <g stroke="currentColor" stroke-width="1.5" stroke-linecap="round">
+              <line x1="10" y1="4"  x2="28" y2="6"/>
+              <line x1="28" y1="6"  x2="22" y2="28"/>
+              <line x1="22" y1="28" x2="4"  y2="26"/>
+              <line x1="4"  y1="26" x2="10" y2="4"/>
+              <line x1="10" y1="4"  x2="22" y2="28"/>
+              <line x1="28" y1="6"  x2="4"  y2="26"/>
+            </g>
+            <g fill="currentColor">
+              <circle cx="10" cy="4"  r="2.5"/>
+              <circle cx="28" cy="6"  r="2.5"/>
+              <circle cx="22" cy="28" r="2.5"/>
+              <circle cx="4"  cy="26" r="2.5"/>
+            </g>
+          </svg>
+          TLSRef
+        </div>
+        <p class="footer-tagline">TLS configuration references and tools for secure deployments.</p>
+      </div>
+      <div class="footer-links">
+        <ul>
+          <li><a href="https://configurator.tlsref.org/">TLS Configurator</a></li>
+          <li><a href="https://docs.tlsref.org/">Documentation</a></li>
+          <li><a href="https://data.tlsref.org/">Machine-Readable Data</a></li>
+        </ul>
+        <ul>
+          <li><a href="https://github.com/tlsref">TLSRef on GitHub</a></li>
+        </ul>
+      </div>
+    </div>
+  </footer>
+
+</body>
+</html>
